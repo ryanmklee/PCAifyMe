@@ -60,5 +60,14 @@ def view_images():
         pictures.append(photo_name)
     return render_template('photos.html', pictures=pictures)
 
+@app.route('/api/photos', methods=['GET'])
+def get_images():
+    files_list = os.listdir(app.config['UPLOADED_PHOTOS_DEST'])
+    pictures = []
+    for p in files_list:
+        photo_name = photos.url(p)
+        pictures.append(photo_name)
+    return json.dumps(pictures)
+
 if __name__ == '__main__':
     app.run(debug=True)
