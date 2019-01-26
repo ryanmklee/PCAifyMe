@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<title>Photos</title>
+<h1>View Photos</h1>
+<a href="{{ url_for('upload_file') }}">Upload</a> /
+<a href="{{ url_for('manage_file') }}">Manage</a>
+<hr>
+
+{% for picture in pictures %}
+    <img src="{{ picture }}">
+
+{% endfor %}
