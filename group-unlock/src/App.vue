@@ -34,27 +34,27 @@
           }
         },
         methods: {
-    capture() {
-        this.canvas = this.$refs.canvas;
-        var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
-        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-        let data = new FormData();
-        canvas.toBlob(function (blob) {
-        data.append('photo', blob);
+          capture() {
+            this.canvas = this.$refs.canvas;
+            var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
+            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+            let data = new FormData();
+            canvas.toBlob(function (blob) {
+            data.append('photo', blob);
 
-        axios
-            .post('http://127.0.0.1:5000/api/add', data, {
+            axios
+              .post('http://127.0.0.1:5000/api/add', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
             .then(res => {
-                console.log(res)
+                    console.log(res)
+                });
             });
-    });
 
-    }
-}
+          }
+        }
     }
 </script>
 
