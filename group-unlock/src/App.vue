@@ -1,6 +1,8 @@
 <template>
     <div id="app">
+        <h1>Group Face Detection</h1>
         <div><video ref="video" id="video" width="640" height="480" autoplay></video></div>
+        <br>
         <div><button id="snap" v-on:click="capture()">Snap Photo</button></div>
         <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
         <ul>
@@ -61,9 +63,27 @@
         background-color: #F0F0F0;
     }
     #app {
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
+      font-family: 'Avenir', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-align: center;
+      color: #2c3e50;
+      margin-top: 60px;
+    }
+    #snap {
+      display:inline-block;
+      border:0.1em solid #FFFFFF;
+      margin:0 0.3em 0.3em 0;
+      border-radius:20px;
+      box-sizing: border-box;
+      font-family:'Roboto',sans-serif;
+      font-weight:300;
+      color:#FFFFFF;
+      text-align:center;
+    }
+
+    #snap:hover {
+      background-color: #f2f2f2;
     }
     #video {
         background-color: #000000;
