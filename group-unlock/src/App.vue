@@ -32,6 +32,7 @@
     }
 },
         methods: {
+                
     capture() {
         this.canvas = this.$refs.canvas;
         var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
@@ -44,6 +45,7 @@
             .post('http://127.0.0.1:5000/api/add', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Access-Control-Allow-Origin': '*',
                 },
             })
             .then(res => {
