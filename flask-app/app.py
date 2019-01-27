@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, json, flash
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
@@ -31,7 +31,29 @@ def upload_file():
         success = False
     return render_template('index.html', form=form, success=success)
 
+@app.route('/api/add', methods=['GET', 'POST'])
+def add_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        file = request.files['photo']
+        name = file.filename
+        photos.save(file, name=name)
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['photo']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
 
+    return "........"
 @app.route('/manage')
 def manage_file():
     files_list = os.listdir(app.config['UPLOADED_PHOTOS_DEST'])
