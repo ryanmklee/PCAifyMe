@@ -6,9 +6,6 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
 from wtforms import SubmitField
 from flask_cors import CORS
-import numpy as np
-import jsonpickle
-import cv2
 import base64
 
 
@@ -28,6 +25,7 @@ class UploadForm(FlaskForm):
     photo = FileField(validators=[FileAllowed(photos, u'Image Only!'), FileRequired(u'Choose a file!')])
     submit = SubmitField(u'Upload')
 
+@app.route('/upload', methods=['POST'])
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -41,15 +39,10 @@ def upload_file():
         success = False
     return render_template('index.html', form=form, success=success)
 
-@app.route('/api/add', methods=['GET', 'POST'])
+@app.route('/api/add', methods=['POST'])
 def add_file():
-    print(request.form['image'])
-    r = request
-    img_file = r.form['image']
-    print(type(img_file))
-    return "....."
-
-
+    print(request.params['firstName'])
+    return "hi"
 
 @app.route('/manage')
 def manage_file():
