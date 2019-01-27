@@ -1,10 +1,16 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, Response, json, make_response, send_file
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
+from werkzeug.utils import secure_filename
 from wtforms import SubmitField
 from flask_cors import CORS
+import numpy as np
+import jsonpickle
+import cv2
+import base64
+
 
 app = Flask(__name__)
 CORS(app)
@@ -15,6 +21,7 @@ app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/static'
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 patch_request_class(app)  # set maximum file size, default is 16MB
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 class UploadForm(FlaskForm):
@@ -36,8 +43,13 @@ def upload_file():
 
 @app.route('/api/add', methods=['GET', 'POST'])
 def add_file():
-    print(type(request))
-    return "........"
+    print(request.form['image'])
+    r = request
+    img_file = r.form['image']
+    print(type(img_file))
+    return "....."
+
+
 
 @app.route('/manage')
 def manage_file():
@@ -75,6 +87,18 @@ def get_images():
         photo_name = photos.url(p)
         pictures.append(photo_name)
     return json.dumps(pictures)
+
+def convert_and_save(b64_string):
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.decodebytes(b64_string.encode()))
+
+def allowed_file(filename):
+    """
+    :param filename:
+    :return:
+    """
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 if __name__ == '__main__':
     app.run(debug=True)

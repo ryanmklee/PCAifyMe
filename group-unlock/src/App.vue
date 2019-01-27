@@ -49,16 +49,19 @@
             imageCapture.takePhoto().then(blob => createImageBitmap(blob))
             .then(imageBitmap => {
             const canvas = document.getElementById("canvas").getContext("2d").getImageData(0,0,640,480);
-            axios
-              .post('http://127.0.0.1:5000/api/add', canvas, {
+//            canvas.append('data', canvas)
+            let formData = new FormData();
+            formData.append('image', formData);
+            axios.post('http://127.0.0.1:5000/api/add', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'content-type': 'multipart/form-data'
                 },
             })  
             .then(res => {
                     console.log(res)
                 });
             });
+
             
 
           },
