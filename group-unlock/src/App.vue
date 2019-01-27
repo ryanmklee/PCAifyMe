@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <h1>Group Face Detection</h1>
-        <div><video ref="video" id="video" width="640" height="480" autoplay></video></div>
+        <div><video ref="video" id="takePhotoCanvas" width="640" height="480" autoplay></video></div>
         <br>
         <div><button id="snap" v-on:click="capture()">Snap Photo</button></div>
         <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
@@ -15,7 +15,12 @@
 
 <script>
     import axios from "axios";
+    import FormData from "form-data";
+    var imageCapture;
+
+
     export default {
+        
         name: 'app',
         data() {
             return {
@@ -30,31 +35,34 @@
               navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
                 this.video.srcObject = stream;
                 this.video.play();
+                const track = stream.getVideoTracks()[0];
+                imageCapture = new ImageCapture(track);
+
               });
           }
+
+    
         },
         methods: {
-          capture() {
-            this.canvas = this.$refs.canvas;
-            var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
-            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-            let data = new FormData();
-            canvas.toBlob(function (blob) {
-            data.append('photo', blob);
 
+          capture() {
+            imageCapture.takePhoto().then(blob => createImageBitmap(blob))
+            .then(imageBitmap => {
+            const canvas = document.getElementById("canvas").getContext("2d").getImageData(0,0,640,480);
             axios
-              .post('http://127.0.0.1:5000/api/add', data, {
+              .post('http://127.0.0.1:5000/api/add', canvas, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'multipart/form-data'
                 },
-            })
+            })  
             .then(res => {
                     console.log(res)
                 });
             });
+            
 
-          }
+          },
+        
         }
     }
 </script>

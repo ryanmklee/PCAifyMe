@@ -36,15 +36,7 @@ def upload_file():
 
 @app.route('/api/add', methods=['GET', 'POST'])
 def add_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        file = request.files['photo']
-        name = file.filename
-        photos.save(file, name=name)
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['photo']
+    print(type(request))
     return "........"
 
 @app.route('/manage')
