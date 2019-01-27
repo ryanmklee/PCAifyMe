@@ -6,6 +6,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'I have a dream'
 app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/static'
 
 photos = UploadSet('photos', IMAGES)
