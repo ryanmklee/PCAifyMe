@@ -35,6 +35,21 @@
         this.canvas = this.$refs.canvas;
         var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
         this.captures.push(canvas.toDataURL("image/png"));
+        var formData = new FormData();
+        formData.append(canvas.toDataURL("image/png"))
+
+        $.ajax({
+          url: 'http://127.0.0.1:5000/api/add',
+          type: POST,
+          data: formData,
+          async: false,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function(status){
+            console.log("Works!")
+          }
+        })
     }
 }
     }
