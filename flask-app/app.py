@@ -6,7 +6,6 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'I have a dream'
 app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/static'
 
 photos = UploadSet('photos', IMAGES)
@@ -38,22 +37,8 @@ def add_file():
         file = request.files['photo']
         name = file.filename
         photos.save(file, name=name)
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['photo']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-
     return "........"
+    
 @app.route('/manage')
 def manage_file():
     files_list = os.listdir(app.config['UPLOADED_PHOTOS_DEST'])
