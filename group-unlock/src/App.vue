@@ -46,6 +46,7 @@
               .post('http://127.0.0.1:5000/api/add', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Access-Control-Allow-Origin': '*',
                 },
             })
             .then(res => {
