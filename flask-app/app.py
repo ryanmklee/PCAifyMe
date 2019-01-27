@@ -4,8 +4,11 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_cl
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 app.config['SECRET_KEY'] = 'I have a dream'
 app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/static'
 

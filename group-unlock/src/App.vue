@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import axios from "axios";
     export default {
         name: 'app',
         data() {
@@ -34,22 +35,22 @@
     capture() {
         this.canvas = this.$refs.canvas;
         var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
-        this.captures.push(canvas.toDataURL("image/png"));
-        var formData = new FormData();
-        formData.append(canvas.toDataURL("image/png"))
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+        let data = new FormData();
+        canvas.toBlob(function (blob) {
+        data.append('photo', blob);
 
-        $.ajax({
-          url: 'http://127.0.0.1:5000/api/add',
-          type: POST,
-          data: formData,
-          async: false,
-          cache: false,
-          contentType: false,
-          processData: false,
-          success: function(status){
-            console.log("Works!")
-          }
-        })
+        axios
+            .post('http://127.0.0.1:5000/api/add', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then(res => {
+                console.log(res)
+            });
+    });
+
     }
 }
     }
